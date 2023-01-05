@@ -33,12 +33,23 @@ private fun main() {
 private fun startGame() {
     Logger.i { "ゲーム処理開始" }
 
+    //  ゲームの初期化を行う。
+    Game.INSTANCE.init()
+
+    //  ゲームループを開始する。
     window.requestAnimationFrame { onAnimFrameCalled() }
+
+    //  Canvasのタッチイベントを購読し、ゲーム処理に通知する。
+    val canvas = findCanvas()
+    canvas.onpointerdown = { Game.INSTANCE.onTouchEventOccurred(TouchEvent.PointerDown.of(canvas, it)) }
+    canvas.onpointermove = { Game.INSTANCE.onTouchEventOccurred(TouchEvent.PointerMove.of(canvas, it)) }
+    canvas.onpointerup = { Game.INSTANCE.onTouchEventOccurred(TouchEvent.PointerUp.of(canvas, it)) }
+    canvas.onpointercancel = { Game.INSTANCE.onTouchEventOccurred(TouchEvent.PointerCancel.of(canvas, it)) }
 }
 
 //  アニメーション用フレームが呼び出されたとき。
 private fun onAnimFrameCalled() {
-    val canvas = document.getElementById("canvas") as HTMLCanvasElement
+    val canvas = findCanvas()
     val context = canvas.getContext("2d") as CanvasRenderingContext2D
     context.clearRect(x = 0.0, y = 0.0, w = canvas.width.toDouble(), h = canvas.height.toDouble())
 
@@ -54,6 +65,9 @@ private fun onAnimFrameCalled() {
     context.scale(1.0 / scaleX, 1.0 / scaleY)
     window.requestAnimationFrame { onAnimFrameCalled() }
 }
+
+//  DOMからCanvasを取得する。
+private fun findCanvas(): HTMLCanvasElement = document.getElementById("canvas") as HTMLCanvasElement
 
 //  リリースビルドで実行されているかどうかを判定する。
 //  (NOTE: GitHub Pagesでホストするため、リリース環境では常にHTTPS化がされているものとする。)
