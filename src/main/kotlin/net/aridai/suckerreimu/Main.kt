@@ -2,6 +2,8 @@ package net.aridai.suckerreimu
 
 import kotlinx.browser.document
 import kotlinx.browser.window
+import org.w3c.dom.CanvasRenderingContext2D
+import org.w3c.dom.HTMLCanvasElement
 
 private fun main() {
     //  ログの出力設定を行う。
@@ -12,6 +14,45 @@ private fun main() {
     //  (初回のコールバックは手動で呼び出す。)
     window.onresize = { onResize() }
     onResize()
+
+    launchCoroutine {
+        try {
+            //  リソースの読み込みを行う。
+            Resources.load()
+
+            //  ゲームを開始する。
+            startGame()
+        } catch (e: Exception) {
+            Logger.wtf(e) { "システムエラー" }
+            window.alert("システムエラーが発生しました。")
+        }
+    }
+}
+
+//  ゲームの処理を開始する。
+private fun startGame() {
+    Logger.i { "ゲーム処理開始" }
+
+    window.requestAnimationFrame { onAnimFrameCalled() }
+}
+
+//  アニメーション用フレームが呼び出されたとき。
+private fun onAnimFrameCalled() {
+    val canvas = document.getElementById("canvas") as HTMLCanvasElement
+    val context = canvas.getContext("2d") as CanvasRenderingContext2D
+    context.clearRect(x = 0.0, y = 0.0, w = canvas.width.toDouble(), h = canvas.height.toDouble())
+
+    //  Canvasをスケーリングして固定サイズで描画できるようにする。
+    val scaleX = canvas.width / Game.CANVAS_WIDTH
+    val scaleY = canvas.height / Game.CANVAS_HEIGHT
+    context.scale(scaleX, scaleY)
+
+    //  ゲームの描画処理を行う。
+    Game.INSTANCE.render(context)
+
+    //  スケーリングを戻し、次のアニメーション用フレームの呼び出しを購読する。
+    context.scale(1.0 / scaleX, 1.0 / scaleY)
+    window.requestAnimationFrame { onAnimFrameCalled() }
 }
 
 //  リリースビルドで実行されているかどうかを判定する。

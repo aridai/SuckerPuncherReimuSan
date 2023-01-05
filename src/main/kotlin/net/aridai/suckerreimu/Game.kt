@@ -1,5 +1,7 @@
 package net.aridai.suckerreimu
 
+import org.w3c.dom.CanvasRenderingContext2D
+
 /**
  * ゲーム
  */
@@ -21,5 +23,18 @@ internal class Game {
          * (モバイル環境でのぼやけ防止用)
          */
         const val RENDERING_SCALE: Int = 2
+
+        /**
+         * ゲームのシングルトンインスタンス
+         */
+        val INSTANCE: Game by lazy { Game() }
+    }
+
+    /**
+     * 描画処理を行う。
+     */
+    fun render(context: CanvasRenderingContext2D) {
+        //  TODO: 仮
+        context.drawImage(Resources.Images.background, 0.0, 0.0)
     }
 }
