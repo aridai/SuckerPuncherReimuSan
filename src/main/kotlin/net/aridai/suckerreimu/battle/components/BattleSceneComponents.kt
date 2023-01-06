@@ -1,6 +1,7 @@
 package net.aridai.suckerreimu.battle.components
 
 import net.aridai.suckerreimu.TouchEvent
+import net.aridai.suckerreimu.battle.CharacterSide
 import org.w3c.dom.CanvasRenderingContext2D
 
 /**
@@ -19,11 +20,23 @@ internal class BattleSceneComponents {
     val messageFrame: MessageFrame = MessageFrame()
 
     /**
+     * れーむさん (自分側)
+     */
+    val reimu: Character = Character(side = CharacterSide.OWN)
+
+    /**
+     * まりさちゃん (相手側)
+     */
+    val marisa: Character = Character(side = CharacterSide.OPPONENT)
+
+    /**
      * 描画処理を行う。
      */
     fun render(context: CanvasRenderingContext2D) {
         //  コンポーネントの描画処理を呼び出していく。
         this.battleBackground.render(context)
+        this.reimu.render(context)
+        this.marisa.render(context)
         this.messageFrame.render(context)
     }
 
