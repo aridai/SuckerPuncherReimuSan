@@ -1,7 +1,7 @@
 package net.aridai.suckerreimu
 
+import net.aridai.suckerreimu.battle.BattleScene
 import org.w3c.dom.CanvasRenderingContext2D
-import kotlin.math.PI
 
 /**
  * ゲーム
@@ -31,42 +31,28 @@ internal class Game {
         val INSTANCE: Game by lazy { Game() }
     }
 
-    private var point: Pair<Double, Double>? = null
+    //  対戦シーン
+    private lateinit var battleScene: BattleScene
 
     /**
      * 初期化処理を行う。
      */
     fun init() {
-        //  TODO: 実装
+        this.battleScene = BattleScene()
+        this.battleScene.init()
     }
 
     /**
      * 描画処理を行う。
      */
     fun render(context: CanvasRenderingContext2D) {
-        //  TODO: 仮
-        context.drawImage(Resources.Images.background, 0.0, 0.0)
-        val point = this.point
-        if (point != null) {
-            val (x, y) = point
-            context.beginPath()
-            context.fillStyle = "#000000"
-            context.arc(x, y, 10.0, 0.0, 2 * PI)
-            context.fill()
-            context.font = "48px Arial"
-            context.fillText("(${x.toInt()}, ${y.toInt()})", x + 10.0 * 2, y + 12)
-        }
+        this.battleScene.render(context)
     }
 
     /**
      * タッチイベントが発生したとき。
      */
     fun onTouchEventOccurred(event: TouchEvent) {
-        //  TODO: 仮
-        this.point = when (event) {
-            is TouchEvent.PointerDown -> event.x to event.y
-            is TouchEvent.PointerMove -> if (this.point != null) event.x to event.y else null
-            is TouchEvent.PointerUp, is TouchEvent.PointerCancel -> null
-        }
+        this.battleScene.onTouchEventOccurred(event)
     }
 }
