@@ -30,6 +30,16 @@ internal class BattleSceneComponents {
     val marisa: Character = Character(side = CharacterSide.OPPONENT)
 
     /**
+     * れーむさんのステータスバー
+     */
+    val reimuStatusBar: CharacterStatusBar = CharacterStatusBar(side = CharacterSide.OWN)
+
+    /**
+     * まりさちゃんのステータスバー
+     */
+    val marisaStatusBar: CharacterStatusBar = CharacterStatusBar(side = CharacterSide.OPPONENT)
+
+    /**
      * 描画処理を行う。
      */
     fun render(context: CanvasRenderingContext2D) {
@@ -37,6 +47,8 @@ internal class BattleSceneComponents {
         this.battleBackground.render(context)
         this.reimu.render(context)
         this.marisa.render(context)
+        this.reimuStatusBar.render(context)
+        this.marisaStatusBar.render(context)
         this.messageFrame.render(context)
     }
 
