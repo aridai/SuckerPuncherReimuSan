@@ -7,12 +7,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Coroutineを起動する。
  */
-internal fun launchCoroutine(block: suspend () -> Unit): Job {
-    return CoroutineScope(Dispatchers.Main.immediate).launch { block.invoke() }
+internal fun launchCoroutine(context: CoroutineContext = Dispatchers.Main.immediate, block: suspend () -> Unit): Job {
+    return CoroutineScope(context).launch { block.invoke() }
 }
 
 /**

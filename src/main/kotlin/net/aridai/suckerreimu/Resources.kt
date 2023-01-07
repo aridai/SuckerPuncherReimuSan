@@ -20,10 +20,22 @@ internal object Resources {
          */
         lateinit var background: Image; private set
 
+        /**
+         * れーむさんキャラクタ画像
+         */
+        lateinit var characterReimu: Image; private set
+
+        /**
+         * まりさちゃんキャラクタ画像
+         */
+        lateinit var characterMarisa: Image; private set
+
         suspend fun load() {
             Logger.v { "画像リソース読み込み 開始" }
 
             this.background = this.loadImage("img/background.png")
+            this.characterReimu = this.loadImage("img/character_reimu.png")
+            this.characterMarisa = this.loadImage("img/character_marisa.png")
 
             Logger.v { "画像リソース読み込み 終了" }
         }

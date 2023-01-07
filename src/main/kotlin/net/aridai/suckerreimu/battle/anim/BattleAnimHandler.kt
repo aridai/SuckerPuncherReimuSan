@@ -23,6 +23,7 @@ internal interface BattleAnimHandler {
                 is BattleAnim.Parallel -> ParallelAnimHandler
                 is BattleAnim.Delay -> DelayAnimHandler
                 is BattleAnim.Message -> MessageAnimHandler
+                is BattleAnim.CharacterStatusBarEnteringAnim -> CharacterStatusBarEnteringAnimHandler
             }
         }
     }

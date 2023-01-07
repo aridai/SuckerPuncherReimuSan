@@ -1,6 +1,7 @@
 package net.aridai.suckerreimu.battle.components
 
 import net.aridai.suckerreimu.TouchEvent
+import net.aridai.suckerreimu.battle.CharacterSide
 import org.w3c.dom.CanvasRenderingContext2D
 
 /**
@@ -19,18 +20,49 @@ internal class BattleSceneComponents {
     val messageFrame: MessageFrame = MessageFrame()
 
     /**
+     * 技メニュー
+     */
+    val moveMenu: MoveMenu = MoveMenu()
+
+    /**
+     * れーむさん (自分側)
+     */
+    val reimu: Character = Character(side = CharacterSide.OWN)
+
+    /**
+     * まりさちゃん (相手側)
+     */
+    val marisa: Character = Character(side = CharacterSide.OPPONENT)
+
+    /**
+     * れーむさんのステータスバー
+     */
+    val reimuStatusBar: CharacterStatusBar = CharacterStatusBar(side = CharacterSide.OWN)
+
+    /**
+     * まりさちゃんのステータスバー
+     */
+    val marisaStatusBar: CharacterStatusBar = CharacterStatusBar(side = CharacterSide.OPPONENT)
+
+    /**
      * 描画処理を行う。
      */
     fun render(context: CanvasRenderingContext2D) {
         //  コンポーネントの描画処理を呼び出していく。
         this.battleBackground.render(context)
+        this.reimu.render(context)
+        this.marisa.render(context)
+        this.reimuStatusBar.render(context)
+        this.marisaStatusBar.render(context)
         this.messageFrame.render(context)
+        this.moveMenu.render(context)
     }
 
     /**
      * タッチイベントが発生したとき。
      */
     fun onTouchEventOccurred(event: TouchEvent) {
-        //  TODO: 子コンポーネントのタッチイベントコールバックの呼び出し
+        //  コンポーネントのイベントコールバックを呼び出していく。
+        this.moveMenu.onTouchEventOccurred(event)
     }
 }
