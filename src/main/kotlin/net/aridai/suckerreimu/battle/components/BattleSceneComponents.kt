@@ -20,6 +20,11 @@ internal class BattleSceneComponents {
     val messageFrame: MessageFrame = MessageFrame()
 
     /**
+     * 技メニュー
+     */
+    val moveMenu: MoveMenu = MoveMenu()
+
+    /**
      * れーむさん (自分側)
      */
     val reimu: Character = Character(side = CharacterSide.OWN)
@@ -50,12 +55,14 @@ internal class BattleSceneComponents {
         this.reimuStatusBar.render(context)
         this.marisaStatusBar.render(context)
         this.messageFrame.render(context)
+        this.moveMenu.render(context)
     }
 
     /**
      * タッチイベントが発生したとき。
      */
     fun onTouchEventOccurred(event: TouchEvent) {
-        //  TODO: 子コンポーネントのタッチイベントコールバックの呼び出し
+        //  コンポーネントのイベントコールバックを呼び出していく。
+        this.moveMenu.onTouchEventOccurred(event)
     }
 }
