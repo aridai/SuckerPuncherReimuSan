@@ -23,6 +23,19 @@ internal sealed interface BattleAnim {
     data class Delay(val delayInMs: Long) : BattleAnim
 
     /**
+     * 背景のフェードインアニメ
+     */
+    data class BackgroundFadeInAnim(val durationInMs: Long = DEFAULT_DURATION_IN_MS) : BattleAnim {
+        companion object {
+
+            /**
+             * デフォルト期間
+             */
+            const val DEFAULT_DURATION_IN_MS: Long = 1000L
+        }
+    }
+
+    /**
      * キャラクタステータスバー入場アニメ
      */
     data class CharacterStatusBarEnteringAnim(

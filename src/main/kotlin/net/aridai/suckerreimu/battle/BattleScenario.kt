@@ -13,6 +13,7 @@ internal object BattleScenario {
     fun createInitialState(): BattleSceneState {
         //  TODO: 対戦シーン開始時の会話などの実装
         val animQueue = listOf(
+            BattleAnim.BackgroundFadeInAnim(),
             BattleAnim.CharacterStatusBarEnteringAnim(
                 side = CharacterSide.OPPONENT,
                 name = "まりさちゃん",
