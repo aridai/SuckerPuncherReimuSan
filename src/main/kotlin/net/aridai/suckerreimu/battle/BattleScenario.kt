@@ -38,6 +38,7 @@ internal object BattleScenario {
             BattleAnim.CharacterStatUpAnim(side = CharacterSide.OPPONENT),
             BattleAnim.CharacterHeldItemAnim(side = CharacterSide.OPPONENT),
             BattleAnim.CharacterDamageAnim(side = CharacterSide.OWN),
+            BattleAnim.AbilityPopupAnim(side = CharacterSide.OWN, abilityName = "ぶちぎれいむ"),
             BattleAnim.CharacterExitingAnim(side = CharacterSide.OPPONENT),
         )
         return BattleSceneState.PlayingAnimations(animQueue)

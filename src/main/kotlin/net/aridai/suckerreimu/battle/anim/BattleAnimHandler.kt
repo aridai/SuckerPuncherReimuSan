@@ -31,6 +31,7 @@ internal interface BattleAnimHandler {
                 is BattleAnim.CharacterStatDownAnim -> CharacterStatDownAnimHandler
                 is BattleAnim.CharacterHeldItemAnim -> CharacterHeldItemAnimHandler
                 is BattleAnim.CharacterStatusBarEnteringAnim -> CharacterStatusBarEnteringAnimHandler
+                is BattleAnim.AbilityPopupAnim -> AbilityPopupAnimHandler
             }
         }
     }

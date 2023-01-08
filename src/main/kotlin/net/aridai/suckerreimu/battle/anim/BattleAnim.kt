@@ -157,6 +157,23 @@ internal sealed interface BattleAnim {
     }
 
     /**
+     * 特性ポップアップ表示アニメ
+     */
+    data class AbilityPopupAnim(
+        val side: CharacterSide,
+        val abilityName: String,
+        val durationInMs: Long = DEFAULT_DURATION_IN_MS,
+    ) : BattleAnim {
+        companion object {
+
+            /**
+             * デフォルト期間
+             */
+            const val DEFAULT_DURATION_IN_MS: Long = 1000L
+        }
+    }
+
+    /**
      * メッセージ表示
      */
     data class Message(val text: String, val durationInMs: Long = DEFAULT_DURATION_IN_MS) : BattleAnim {
