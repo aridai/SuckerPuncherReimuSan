@@ -157,6 +157,23 @@ internal sealed interface BattleAnim {
     }
 
     /**
+     * キャラクタステータスバーHP更新アニメ
+     */
+    data class CharacterStatusBarHpUpdatingAnim(
+        val side: CharacterSide,
+        val updatedHp: Int,
+        val durationInMs: Long = DEFAULT_DURATION_IN_MS,
+    ) : BattleAnim {
+        companion object {
+
+            /**
+             * デフォルト期間
+             */
+            const val DEFAULT_DURATION_IN_MS: Long = 500L
+        }
+    }
+
+    /**
      * 特性ポップアップ表示アニメ
      */
     data class AbilityPopupAnim(

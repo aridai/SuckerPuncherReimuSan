@@ -148,6 +148,21 @@ internal class CharacterStatusBar(private val side: CharacterSide) {
         else startAnimUpdaterAsync(durationInMs) { progress -> this.positioningProgress = progress }
     }
 
+    /**
+     * 現在HPを更新する。
+     */
+    suspend fun updateCurrentHp(destHp: Int, durationInMs: Long) {
+        val snapshot = this.statusSnapshot ?: return
+        val srcHp = snapshot.currentHp
+        val diff = destHp - srcHp
+
+        //  アニメーションさせながらHPを更新していく。
+        startAnimUpdaterAsync(durationInMs) { progress ->
+            this.statusSnapshot = snapshot.copy(currentHp = srcHp + (diff * progress).toInt())
+        }
+        this.statusSnapshot = snapshot.copy(currentHp = destHp)
+    }
+
     //  ステータスのスナップショット値
     private data class StatusSnapshot(val name: String, val currentHp: Int, val maxHp: Int)
 }
