@@ -66,6 +66,8 @@ internal class BattleScene {
             //  技選択中
             is BattleSceneState.SelectingMoves -> {
                 //  TODO: 仮 (選択結果を管理部分に通知)
+                this.components.reimu.startStandbyAnim()
+
                 Logger.v { "対戦シーン 技選択開始" }
                 val selectedMoveIndex = this.components.moveMenu.showMoveMenu(
                     listOf(
@@ -74,6 +76,8 @@ internal class BattleScene {
                     ),
                 )
                 Logger.v { "対戦シーン 技選択終了: $selectedMoveIndex" }
+
+                this.components.reimu.stopStandbyAnim()
             }
         }
 

@@ -36,6 +36,108 @@ internal sealed interface BattleAnim {
     }
 
     /**
+     * キャラクタ入場アニメ
+     */
+    data class CharacterEnteringAnim(
+        val side: CharacterSide,
+        val durationInMs: Long = DEFAULT_DURATION_IN_MS,
+    ) : BattleAnim {
+        companion object {
+
+            /**
+             * デフォルト期間
+             */
+            const val DEFAULT_DURATION_IN_MS: Long = 250L
+        }
+    }
+
+    /**
+     * キャラクタ退出アニメ
+     */
+    data class CharacterExitingAnim(
+        val side: CharacterSide,
+        val durationInMs: Long = DEFAULT_DURATION_IN_MS,
+    ) : BattleAnim {
+        companion object {
+
+            /**
+             * デフォルト期間
+             */
+            const val DEFAULT_DURATION_IN_MS: Long = 250L
+        }
+    }
+
+    /**
+     * キャラクタダメージアニメ
+     */
+    data class CharacterDamageAnim(
+        val side: CharacterSide,
+        val blinkCount: Int = DEFAULT_BLINK_COUNT,
+        val durationInMs: Long = DEFAULT_DURATION_IN_MS,
+    ) : BattleAnim {
+        companion object {
+
+            /**
+             * デフォルト点滅回数
+             */
+            const val DEFAULT_BLINK_COUNT: Int = 2
+
+            /**
+             * デフォルト期間
+             */
+            const val DEFAULT_DURATION_IN_MS: Long = 750L
+        }
+    }
+
+    /**
+     * キャラクタ能力上昇アニメ
+     */
+    data class CharacterStatUpAnim(
+        val side: CharacterSide,
+        val durationInMs: Long = DEFAULT_DURATION_IN_MS,
+    ) : BattleAnim {
+        companion object {
+
+            /**
+             * デフォルト期間
+             */
+            const val DEFAULT_DURATION_IN_MS: Long = 1200L
+        }
+    }
+
+    /**
+     * キャラクタ能力下降アニメ
+     */
+    data class CharacterStatDownAnim(
+        val side: CharacterSide,
+        val durationInMs: Long = DEFAULT_DURATION_IN_MS,
+    ) : BattleAnim {
+        companion object {
+
+            /**
+             * デフォルト期間
+             */
+            const val DEFAULT_DURATION_IN_MS: Long = 1200L
+        }
+    }
+
+    /**
+     * キャラクタ持ち物アニメ
+     */
+    data class CharacterHeldItemAnim(
+        val side: CharacterSide,
+        val durationInMs: Long = DEFAULT_DURATION_IN_MS,
+    ) : BattleAnim {
+        companion object {
+
+            /**
+             * デフォルト期間
+             */
+            const val DEFAULT_DURATION_IN_MS: Long = 1000L
+        }
+    }
+
+    /**
      * キャラクタステータスバー入場アニメ
      */
     data class CharacterStatusBarEnteringAnim(

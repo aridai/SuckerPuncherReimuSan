@@ -28,6 +28,17 @@ internal object BattleScenario {
                 currentHp = 64,
                 maxHp = 255,
             ),
+            BattleAnim.Parallel(
+                animations = listOf(
+                    BattleAnim.CharacterEnteringAnim(side = CharacterSide.OWN),
+                    BattleAnim.CharacterEnteringAnim(side = CharacterSide.OPPONENT),
+                ),
+            ),
+            BattleAnim.CharacterStatDownAnim(side = CharacterSide.OPPONENT),
+            BattleAnim.CharacterStatUpAnim(side = CharacterSide.OPPONENT),
+            BattleAnim.CharacterHeldItemAnim(side = CharacterSide.OPPONENT),
+            BattleAnim.CharacterDamageAnim(side = CharacterSide.OWN),
+            BattleAnim.CharacterExitingAnim(side = CharacterSide.OPPONENT),
         )
         return BattleSceneState.PlayingAnimations(animQueue)
     }
