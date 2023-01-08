@@ -23,7 +23,16 @@ internal interface BattleAnimHandler {
                 is BattleAnim.Parallel -> ParallelAnimHandler
                 is BattleAnim.Delay -> DelayAnimHandler
                 is BattleAnim.Message -> MessageAnimHandler
+                is BattleAnim.BackgroundFadeInAnim -> BackgroundFadeInAnimHandler
+                is BattleAnim.CharacterEnteringAnim -> CharacterEnteringAnimHandler
+                is BattleAnim.CharacterExitingAnim -> CharacterExitingAnimHandler
+                is BattleAnim.CharacterDamageAnim -> CharacterDamageAnimHandler
+                is BattleAnim.CharacterStatUpAnim -> CharacterStatUpAnimHandler
+                is BattleAnim.CharacterStatDownAnim -> CharacterStatDownAnimHandler
+                is BattleAnim.CharacterHeldItemAnim -> CharacterHeldItemAnimHandler
                 is BattleAnim.CharacterStatusBarEnteringAnim -> CharacterStatusBarEnteringAnimHandler
+                is BattleAnim.CharacterStatusBarHpUpdatingAnim -> CharacterStatusBarHpUpdatingAnimHandler
+                is BattleAnim.AbilityPopupAnim -> AbilityPopupAnimHandler
             }
         }
     }

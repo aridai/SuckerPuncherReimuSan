@@ -45,6 +45,16 @@ internal class BattleSceneComponents {
     val marisaStatusBar: CharacterStatusBar = CharacterStatusBar(side = CharacterSide.OPPONENT)
 
     /**
+     * れーむさんの特性ポップアップ
+     */
+    val reimuAbilityPopup: AbilityPopup = AbilityPopup(side = CharacterSide.OWN)
+
+    /**
+     * まりささんの特性ポップアップ
+     */
+    val marisaAbilityPopup: AbilityPopup = AbilityPopup(side = CharacterSide.OPPONENT)
+
+    /**
      * 描画処理を行う。
      */
     fun render(context: CanvasRenderingContext2D) {
@@ -54,6 +64,8 @@ internal class BattleSceneComponents {
         this.marisa.render(context)
         this.reimuStatusBar.render(context)
         this.marisaStatusBar.render(context)
+        this.reimuAbilityPopup.render(context)
+        this.marisaAbilityPopup.render(context)
         this.messageFrame.render(context)
         this.moveMenu.render(context)
     }

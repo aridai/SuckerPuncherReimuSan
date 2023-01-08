@@ -28,10 +28,28 @@ internal class BattleStateManager {
 
             //  アニメーション再生中状態が終了した場合
             is BattleSceneState.PlayingAnimations -> {
-                //  TODO: 仮
-                //  技選択中状態に遷移する。
-                val next = BattleSceneState.SelectingMoves
-                this._state.value = next
+                when (val turn = state.turn) {
+
+                    //  初期状態だった場合
+                    is BattleTurn.InitialState -> {
+                        //  最初のターン (自動操作) のアニメーションを再生させる。
+                        this._state.value = BattleScenario.createFirstTurnState()
+                    }
+
+                    //  最初のターンだった場合
+                    is BattleTurn.FirstTurn -> {
+                        //  次のターンの技選択を行わせる。
+                        this._state.value = BattleSceneState.SelectingMoves(turn = turn.next)
+                    }
+
+                    //  それ以降のターンだった場合
+                    is BattleTurn.PlayableTurn -> {
+                        //  TODO: 決着判定
+
+                        //  次のターンの技選択を行わせる。
+                        this._state.value = BattleSceneState.SelectingMoves(turn = turn.next)
+                    }
+                }
             }
 
             //  技選択中状態が終了した場合

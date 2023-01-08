@@ -30,12 +30,24 @@ internal object Resources {
          */
         lateinit var characterMarisa: Image; private set
 
+        /**
+         * 能力上昇エフェクト画像
+         */
+        lateinit var statUpEffect: Image; private set
+
+        /**
+         * 能力下降エフェクト画像
+         */
+        lateinit var statDownEffect: Image; private set
+
         suspend fun load() {
             Logger.v { "画像リソース読み込み 開始" }
 
             this.background = this.loadImage("img/background.png")
             this.characterReimu = this.loadImage("img/character_reimu.png")
             this.characterMarisa = this.loadImage("img/character_marisa.png")
+            this.statUpEffect = this.loadImage("img/stat_up_effect.png")
+            this.statDownEffect = this.loadImage("img/stat_down_effect.png")
 
             Logger.v { "画像リソース読み込み 終了" }
         }
