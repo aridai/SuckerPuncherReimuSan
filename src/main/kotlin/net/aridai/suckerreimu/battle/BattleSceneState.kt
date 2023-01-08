@@ -13,12 +13,24 @@ internal sealed interface BattleSceneState {
     val turn: BattleTurn
 
     /**
+     * 戦況のスナップショット
+     */
+    val status: BattleStatusSnapshot
+
+    /**
      * アニメーション再生中
      */
-    data class PlayingAnimations(override val turn: BattleTurn, val animQueue: List<BattleAnim>) : BattleSceneState
+    data class PlayingAnimations(
+        override val turn: BattleTurn,
+        override val status: BattleStatusSnapshot,
+        val animQueue: List<BattleAnim>,
+    ) : BattleSceneState
 
     /**
      * 技選択中
      */
-    data class SelectingMoves(override val turn: BattleTurn.PlayableTurn) : BattleSceneState
+    data class SelectingMoves(
+        override val turn: BattleTurn.PlayableTurn,
+        override val status: BattleStatusSnapshot,
+    ) : BattleSceneState
 }

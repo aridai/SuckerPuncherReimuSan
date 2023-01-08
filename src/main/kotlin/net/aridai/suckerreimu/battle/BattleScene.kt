@@ -53,7 +53,7 @@ internal class BattleScene {
     private suspend fun onBattleStateChanged(state: BattleSceneState) {
         Logger.d { "対戦シーン 状態変化: $state" }
 
-        when (state) {
+        val result = when (state) {
 
             //  アニメーション再生中
             is BattleSceneState.PlayingAnimations -> {
@@ -61,27 +61,24 @@ internal class BattleScene {
                 for (anim in state.animQueue) {
                     BattleAnimHandler.of(anim).handle(anim, this.components)
                 }
+
+                BattleSceneStateResult.PlayingAnimations(state)
             }
 
             //  技選択中
             is BattleSceneState.SelectingMoves -> {
-                //  TODO: 仮 (選択結果を管理部分に通知)
+
+                //  ユーザの技選択を待機する。
                 this.components.reimu.startStandbyAnim()
-
-                Logger.v { "対戦シーン 技選択開始" }
-                val selectedMoveIndex = this.components.moveMenu.showMoveMenu(
-                    listOf(
-                        MoveSnapshot(moveName = "ふいうち", remainingPp = 8, maxPp = 8),
-                        MoveSnapshot(moveName = "むそうふういん", remainingPp = 5, maxPp = 5),
-                    ),
-                )
-                Logger.v { "対戦シーン 技選択終了: $selectedMoveIndex" }
-
+                val moves = state.status.reimuMoves
+                val selectedMove = this.components.moveMenu.showMoveMenu(moves)
                 this.components.reimu.stopStandbyAnim()
+
+                BattleSceneStateResult.SelectingMoves(state, selectedMove.moveKind)
             }
         }
 
         //  状態の終了を通知する。
-        this.manager.onStateEnded(state)
+        this.manager.onStateEnded(result)
     }
 }

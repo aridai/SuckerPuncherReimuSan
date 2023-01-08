@@ -216,7 +216,7 @@ internal class MoveMenu {
         val nameY = y + VERTICAL_PADDING + MOVE_NAME_FONT_SIZE
         context.font = MOVE_NAME_FONT
         context.fillStyle = MOVE_NAME_FILL_STYLE
-        context.fillText(move.moveName, nameX, nameY)
+        context.fillText(move.moveKind.moveName, nameX, nameY)
 
         //  PPを描画する。
         val ppX = x + ITEM_WIDTH - HORIZONTAL_PADDING
