@@ -40,6 +40,21 @@ internal object Resources {
          */
         lateinit var statDownEffect: Image; private set
 
+        /**
+         * 結果シーン画像 (勝ち)
+         */
+        lateinit var winResultScreen: Image; private set
+
+        /**
+         * 結果シーン画像 (負け)
+         */
+        lateinit var loseResultScreen: Image; private set
+
+        /**
+         * 共有ボタン画像
+         */
+        lateinit var shareButton: Image; private set
+
         suspend fun load() {
             Logger.v { "画像リソース読み込み 開始" }
 
@@ -48,6 +63,9 @@ internal object Resources {
             this.characterMarisa = this.loadImage("img/character_marisa.png")
             this.statUpEffect = this.loadImage("img/stat_up_effect.png")
             this.statDownEffect = this.loadImage("img/stat_down_effect.png")
+            this.winResultScreen = this.loadImage("img/win_result_screen.png")
+            this.loseResultScreen = this.loadImage("img/lose_result_screen.png")
+            this.shareButton = this.loadImage("img/share_button.png")
 
             Logger.v { "画像リソース読み込み 終了" }
         }

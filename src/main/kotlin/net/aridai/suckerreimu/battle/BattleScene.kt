@@ -6,12 +6,13 @@ import net.aridai.suckerreimu.TouchEvent
 import net.aridai.suckerreimu.battle.anim.BattleAnimHandler
 import net.aridai.suckerreimu.battle.components.BattleSceneComponents
 import net.aridai.suckerreimu.launchCoroutine
+import net.aridai.suckerreimu.result.ResultSceneArgs
 import org.w3c.dom.CanvasRenderingContext2D
 
 /**
  * 対戦シーン
  */
-internal class BattleScene {
+internal class BattleScene(private val onBattleFinished: (args: ResultSceneArgs) -> Unit) {
 
     //  対戦シーンの状態管理ロジック
     private lateinit var manager: BattleStateManager
@@ -26,7 +27,7 @@ internal class BattleScene {
      * 初期化処理を行う。
      */
     fun init() {
-        this.manager = BattleStateManager()
+        this.manager = BattleStateManager(this.onBattleFinished)
         this.components = BattleSceneComponents()
 
         //  対戦シーンの状態変更を購読する。

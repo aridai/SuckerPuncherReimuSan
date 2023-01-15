@@ -4,12 +4,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import net.aridai.suckerreimu.Logger
+import net.aridai.suckerreimu.result.ResultSceneArgs
 import kotlin.random.Random
 
 /**
  * 対戦シーンの状態管理ロジック
  */
-internal class BattleStateManager {
+internal class BattleStateManager(private val onBattleFinished: (args: ResultSceneArgs) -> Unit) {
 
     //  NPCの技選択ロジック
     private val selector: NpcMoveSelector
@@ -56,7 +57,10 @@ internal class BattleStateManager {
                     is BattleTurn.PlayableTurn -> {
                         //  決着がついている場合
                         if (state.status.result != BattleStatusSnapshot.BattleResult.ONGOING) {
-                            //  TODO: 処理
+                            //  結果シーンに遷移させる。
+                            val args =
+                                ResultSceneArgs(state.status.result == BattleStatusSnapshot.BattleResult.WIN, turn.turn)
+                            this.onBattleFinished.invoke(args)
                         }
 
                         //  決着がついていない場合

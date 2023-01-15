@@ -1,6 +1,8 @@
 package net.aridai.suckerreimu
 
 import net.aridai.suckerreimu.battle.BattleScene
+import net.aridai.suckerreimu.result.ResultScene
+import net.aridai.suckerreimu.result.ResultSceneArgs
 import org.w3c.dom.CanvasRenderingContext2D
 
 /**
@@ -34,11 +36,14 @@ internal class Game {
     //  対戦シーン
     private lateinit var battleScene: BattleScene
 
+    //  結果シーン
+    private var resultScene: ResultScene? = null
+
     /**
      * 初期化処理を行う。
      */
     fun init() {
-        this.battleScene = BattleScene()
+        this.battleScene = BattleScene(this::onBattleFinished)
         this.battleScene.init()
     }
 
@@ -47,6 +52,7 @@ internal class Game {
      */
     fun render(context: CanvasRenderingContext2D) {
         this.battleScene.render(context)
+        this.resultScene?.render(context)
     }
 
     /**
@@ -54,5 +60,16 @@ internal class Game {
      */
     fun onTouchEventOccurred(event: TouchEvent) {
         this.battleScene.onTouchEventOccurred(event)
+        this.resultScene?.onTouchEventOccurred(event)
+    }
+
+    //  対戦が終了したとき。
+    private fun onBattleFinished(args: ResultSceneArgs) {
+        Logger.d { "対戦終了: $args" }
+
+        //  結果シーンの初期化を行う。
+        val scene = ResultScene()
+        scene.init(args)
+        this.resultScene = scene
     }
 }
