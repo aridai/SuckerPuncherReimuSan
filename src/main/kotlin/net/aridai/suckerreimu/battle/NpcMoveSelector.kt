@@ -13,7 +13,7 @@ internal class NpcMoveSelector(private val random: Random) {
     fun chooseMarisaMove(turn: BattleTurn.PlayableTurn, reimuMove: MoveKind): MoveKind {
         //  2ターン目の場合
         if (turn.turn == 2) {
-            when (reimuMove) {
+            return when (reimuMove) {
 
                 //  れーむさんがむそうふういんを選んでいた場合、まりさちゃんはマスタースパークを選んで勝利する。
                 MoveKind.FANTASY_SEAL -> MoveKind.MASTER_SPARK
