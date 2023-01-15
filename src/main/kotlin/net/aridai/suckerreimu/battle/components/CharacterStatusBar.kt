@@ -72,6 +72,10 @@ internal class CharacterStatusBar(private val side: CharacterSide) {
 
         //  HPゲージの赤ゲージの塗りスタイル
         private const val HP_GAUGE_RED_FILL_STYLE: String = "#FF0000"
+
+        //  HPゲージの残量の最小横幅
+        //  NOTE: HP1の場合でも最低限の横幅を確保することで見やすくするため。
+        private const val HP_GAUGE_REMAINING_MIN_WIDTH: Double = 5.0
     }
 
     //  ステータスのスナップショット値
@@ -129,12 +133,14 @@ internal class CharacterStatusBar(private val side: CharacterSide) {
 
         //  HP残量に応じて色分けする。
         val remainingRatio = (currentHp.toDouble() / maxHp).coerceIn(minimumValue = 0.0, maximumValue = 1.0)
+        val remainingWidth =
+            if (currentHp == 0) 0.0 else (hpGaugeWidth * remainingRatio).coerceAtLeast(HP_GAUGE_REMAINING_MIN_WIDTH)
         context.fillStyle = when {
             remainingRatio <= 0.25 -> HP_GAUGE_RED_FILL_STYLE
             remainingRatio <= 0.5 -> HP_GAUGE_YELLOW_FILL_STYLE
             else -> HP_GAUGE_GREEN_FILL_STYLE
         }
-        context.fillRect(x = hpGaugeX, y = hpGaugeY, w = hpGaugeWidth * remainingRatio, h = HP_GAUGE_HEIGHT)
+        context.fillRect(x = hpGaugeX, y = hpGaugeY, w = remainingWidth, h = HP_GAUGE_HEIGHT)
     }
 
     /**
@@ -146,6 +152,16 @@ internal class CharacterStatusBar(private val side: CharacterSide) {
 
         if (durationInMs == 0L) this.positioningProgress = 1.0f
         else startAnimUpdaterAsync(durationInMs) { progress -> this.positioningProgress = progress }
+    }
+
+    /**
+     * ステータスバーを非表示にさせる。
+     */
+    suspend fun hideStatusBar(durationInMs: Long) {
+        if (durationInMs == 0L) this.positioningProgress = 0.0f
+        else startAnimUpdaterAsync(durationInMs) { progress -> this.positioningProgress = 1.0f - progress }
+
+        this.statusSnapshot = null
     }
 
     /**

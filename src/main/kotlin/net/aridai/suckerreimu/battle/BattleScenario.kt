@@ -72,7 +72,8 @@ internal object BattleScenario {
         )
 
         val turn = BattleTurn.InitialState
-        return BattleSceneState.PlayingAnimations(turn, animQueue)
+        val status = BattleStatusSnapshot.INITIAL
+        return BattleSceneState.PlayingAnimations(turn, status, animQueue)
     }
 
     /**
@@ -87,7 +88,7 @@ internal object BattleScenario {
             BattleAnim.Delay(delayInMs = 500L),
 
             //  まりさちゃんの攻撃
-            BattleAnim.Message(text = "まりさちゃんのマスタースパーク!"),
+            BattleAnim.Message(text = "まりさちゃんの${MoveKind.MASTER_SPARK.moveName}!"),
 
             //  れーむさんのダメージ
             BattleAnim.CharacterDamageAnim(side = CharacterSide.OWN),
@@ -135,7 +136,7 @@ internal object BattleScenario {
             ),
 
             //  れーむさんの攻撃
-            BattleAnim.Message(text = "れーむさんのむそうふういん!"),
+            BattleAnim.Message(text = "れーむさんの${MoveKind.FANTASY_SEAL.moveName}!"),
 
             //  まりさちゃんのダメージ
             BattleAnim.CharacterDamageAnim(side = CharacterSide.OPPONENT),
@@ -157,6 +158,145 @@ internal object BattleScenario {
         )
 
         val turn = BattleTurn.FirstTurn
-        return BattleSceneState.PlayingAnimations(turn, animQueue)
+        val status = BattleStatusSnapshot.INITIAL.consumeMovePp(kind = MoveKind.FANTASY_SEAL)
+        return BattleSceneState.PlayingAnimations(turn, status, animQueue)
     }
+
+    /**
+     * 対戦中のアニメーションの状態を生成する。
+     */
+    fun createBattleAnimState(turn: BattleTurn, pattern: BattleJudgement.Pattern): BattleSceneState {
+        return when (pattern) {
+
+            //  れーむさんがふいうちを打ち、れーむさんが勝つパターン
+            is BattleJudgement.Pattern.Win.SuckerPunchPassed -> {
+                val animQueue = listOf(
+                    //  れーむさんの技
+                    BattleAnim.Message(text = "れーむさんの${MoveKind.SUCKER_PUNCH.moveName}!"),
+
+                    //  まりさちゃんのダメージ
+                    BattleAnim.CharacterDamageAnim(side = CharacterSide.OPPONENT),
+                    BattleAnim.CharacterStatusBarHpUpdatingAnim(side = CharacterSide.OPPONENT, updatedHp = 0),
+
+                    //  タイプ相性メッセージ
+                    BattleAnim.Message(text = "効果はいまひとつのようだ..."),
+
+                    //  勝利
+                    BattleAnim.Message(text = "まりさちゃんは倒れた..."),
+                    BattleAnim.Parallel(
+                        animations = listOf(
+                            BattleAnim.CharacterExitingAnim(side = CharacterSide.OPPONENT),
+                            BattleAnim.CharacterStatusBarExitingAnim(side = CharacterSide.OPPONENT),
+                        ),
+                    ),
+                    BattleAnim.Message(text = "まりさちゃんとの勝負に勝った!"),
+                )
+
+                BattleSceneState.PlayingAnimations(turn, pattern.updatedStatus, animQueue)
+            }
+
+            //  まりさちゃんがわるだくみを積むも、れーむさんがむそうふういんを打ち、れーむさんが勝つパターン
+            is BattleJudgement.Pattern.Win.FantasySealPassed -> {
+                //  れーむさんの技のアニメーション
+                val reimuAnimQueue = listOf(
+                    //  れーむさんの技
+                    BattleAnim.Message(text = "れーむさんの${MoveKind.FANTASY_SEAL.moveName}!"),
+
+                    //  まりさちゃんのダメージ
+                    BattleAnim.CharacterDamageAnim(side = CharacterSide.OPPONENT),
+                    BattleAnim.CharacterStatusBarHpUpdatingAnim(side = CharacterSide.OPPONENT, updatedHp = 0),
+
+                    //  タイプ相性メッセージ
+                    BattleAnim.Message(text = "効果はいまひとつのようだ..."),
+
+                    //  れーむさんの技の追加効果
+                    BattleAnim.CharacterStatDownAnim(side = CharacterSide.OWN),
+                    BattleAnim.Message(text = "れーむさんの防御と特防ががくっと下がった!"),
+
+                    //  勝利
+                    BattleAnim.Message(text = "まりさちゃんは倒れた..."),
+                    BattleAnim.Parallel(
+                        animations = listOf(
+                            BattleAnim.CharacterExitingAnim(side = CharacterSide.OPPONENT),
+                            BattleAnim.CharacterStatusBarExitingAnim(side = CharacterSide.OPPONENT),
+                        ),
+                    ),
+                    BattleAnim.Message(text = "まりさちゃんとの勝負に勝った!"),
+                )
+                val animQueue = when (pattern.canMarisaRaiseCRank) {
+
+                    //  まりさちゃんのわるだくみが成功する場合
+                    true -> this.marisaSuccessAnimQueue + reimuAnimQueue
+
+                    //  まりさちゃんのわるだくみが失敗する場合
+                    false -> this.marisaFailureAnimQueue + reimuAnimQueue
+                }
+
+                BattleSceneState.PlayingAnimations(turn, pattern.updatedStatus, animQueue)
+            }
+
+            //  まりさちゃんが先にマスタースパークを打ち、れーむさんが負けるパターン
+            is BattleJudgement.Pattern.Lose -> {
+                val animQueue = listOf(
+                    //  まりさちゃんの技
+                    BattleAnim.Message(text = "まりさちゃんの${MoveKind.MASTER_SPARK.moveName}!"),
+
+                    //  れーむさんのダメージ
+                    BattleAnim.CharacterDamageAnim(side = CharacterSide.OWN),
+                    BattleAnim.CharacterStatusBarHpUpdatingAnim(side = CharacterSide.OWN, updatedHp = 0),
+
+                    //  タイプ相性メッセージ
+                    BattleAnim.Message(text = "効果はいまひとつのようだ..."),
+
+                    //  まりさちゃんの技の追加効果
+                    BattleAnim.CharacterStatDownAnim(side = CharacterSide.OPPONENT),
+                    BattleAnim.Message(text = "まりさちゃんの防御と特防ががくっと下がった!"),
+
+                    //  敗北
+                    BattleAnim.Message(text = "れーむさんは倒れた..."),
+                    BattleAnim.Parallel(
+                        animations = listOf(
+                            BattleAnim.CharacterExitingAnim(side = CharacterSide.OWN),
+                            BattleAnim.CharacterStatusBarExitingAnim(side = CharacterSide.OWN),
+                        ),
+                    ),
+                    BattleAnim.Message(text = "まりさちゃんとの勝負に負けた..."),
+                )
+
+                BattleSceneState.PlayingAnimations(turn, pattern.updatedStatus, animQueue)
+            }
+
+            //  れーむさんのふいうちが失敗し、まりさちゃんがわるだくみを積み、試合が継続するパターン
+            is BattleJudgement.Pattern.Continue -> {
+                val reimuAnimQueue = listOf(
+                    //  れーむさんの技
+                    BattleAnim.Message(text = "れーむさんの${MoveKind.SUCKER_PUNCH.moveName}!"),
+                    BattleAnim.Message(text = "しかしうまく決まらなかった!"),
+                )
+                val animQueue = when (pattern.canMarisaRaiseCRank) {
+
+                    //  まりさちゃんのわるだくみが成功する場合
+                    true -> reimuAnimQueue + this.marisaSuccessAnimQueue
+
+                    //  まりさちゃんのわるだくみが失敗する場合
+                    false -> reimuAnimQueue + this.marisaFailureAnimQueue
+                }
+
+                BattleSceneState.PlayingAnimations(turn, pattern.updatedStatus, animQueue)
+            }
+        }
+    }
+
+    //  まりさちゃんのわるだくみが成功する場合のアニメーション
+    private val marisaSuccessAnimQueue: List<BattleAnim> = listOf(
+        BattleAnim.Message(text = "まりさちゃんの${MoveKind.NASTY_PLOT.moveName}!"),
+        BattleAnim.CharacterStatUpAnim(side = CharacterSide.OPPONENT),
+        BattleAnim.Message("まりさちゃんの特攻がぐーんと上がった!"),
+    )
+
+    //  まりさちゃんのわるだくみが失敗する場合のアニメーション
+    private val marisaFailureAnimQueue: List<BattleAnim> = listOf(
+        BattleAnim.Message(text = "まりさちゃんの${MoveKind.NASTY_PLOT.moveName}!"),
+        BattleAnim.Message("まりさちゃんの特攻はもう上がらない!"),
+    )
 }

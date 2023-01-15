@@ -6,9 +6,9 @@ package net.aridai.suckerreimu.battle
 internal data class MoveSnapshot(
 
     /**
-     * 技名
+     * 技の種類
      */
-    val moveName: String,
+    val moveKind: MoveKind,
 
     /**
      * 残りPP

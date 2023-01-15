@@ -157,6 +157,22 @@ internal sealed interface BattleAnim {
     }
 
     /**
+     * キャラクタステータスバー退出アニメ
+     */
+    data class CharacterStatusBarExitingAnim(
+        val side: CharacterSide,
+        val durationInMs: Long = DEFAULT_DURATION_IN_MS,
+    ) : BattleAnim {
+        companion object {
+
+            /**
+             * デフォルト期間
+             */
+            const val DEFAULT_DURATION_IN_MS: Long = 100L
+        }
+    }
+
+    /**
      * キャラクタステータスバーHP更新アニメ
      */
     data class CharacterStatusBarHpUpdatingAnim(
@@ -199,7 +215,7 @@ internal sealed interface BattleAnim {
             /**
              * デフォルト期間
              */
-            const val DEFAULT_DURATION_IN_MS: Long = 3000L
+            const val DEFAULT_DURATION_IN_MS: Long = 2000L
         }
     }
 }
