@@ -149,6 +149,16 @@ internal class CharacterStatusBar(private val side: CharacterSide) {
     }
 
     /**
+     * ステータスバーを非表示にさせる。
+     */
+    suspend fun hideStatusBar(durationInMs: Long) {
+        if (durationInMs == 0L) this.positioningProgress = 0.0f
+        else startAnimUpdaterAsync(durationInMs) { progress -> this.positioningProgress = 1.0f - progress }
+
+        this.statusSnapshot = null
+    }
+
+    /**
      * 現在HPを更新する。
      */
     suspend fun updateCurrentHp(destHp: Int, durationInMs: Long) {

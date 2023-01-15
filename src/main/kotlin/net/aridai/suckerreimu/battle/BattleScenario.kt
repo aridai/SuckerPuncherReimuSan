@@ -183,8 +183,12 @@ internal object BattleScenario {
 
                     //  勝利
                     BattleAnim.Message(text = "まりさちゃんは倒れた..."),
-                    BattleAnim.CharacterExitingAnim(side = CharacterSide.OPPONENT),
-                    //  TODO: キャラクタステータスバー非表示
+                    BattleAnim.Parallel(
+                        animations = listOf(
+                            BattleAnim.CharacterExitingAnim(side = CharacterSide.OPPONENT),
+                            BattleAnim.CharacterStatusBarExitingAnim(side = CharacterSide.OPPONENT),
+                        ),
+                    ),
                     BattleAnim.Message(text = "まりさちゃんとの勝負に勝った!"),
                 )
 
@@ -211,8 +215,12 @@ internal object BattleScenario {
 
                     //  勝利
                     BattleAnim.Message(text = "まりさちゃんは倒れた..."),
-                    BattleAnim.CharacterExitingAnim(side = CharacterSide.OPPONENT),
-                    //  TODO: キャラクタステータスバー非表示
+                    BattleAnim.Parallel(
+                        animations = listOf(
+                            BattleAnim.CharacterExitingAnim(side = CharacterSide.OPPONENT),
+                            BattleAnim.CharacterStatusBarExitingAnim(side = CharacterSide.OPPONENT),
+                        ),
+                    ),
                     BattleAnim.Message(text = "まりさちゃんとの勝負に勝った!"),
                 )
                 val animQueue = when (pattern.canMarisaRaiseCRank) {
@@ -246,8 +254,12 @@ internal object BattleScenario {
 
                     //  敗北
                     BattleAnim.Message(text = "れーむさんは倒れた..."),
-                    BattleAnim.CharacterExitingAnim(side = CharacterSide.OWN),
-                    //  TODO: キャラクタステータスバー非表示
+                    BattleAnim.Parallel(
+                        animations = listOf(
+                            BattleAnim.CharacterExitingAnim(side = CharacterSide.OWN),
+                            BattleAnim.CharacterStatusBarExitingAnim(side = CharacterSide.OWN),
+                        ),
+                    ),
                     BattleAnim.Message(text = "まりさちゃんとの勝負に負けた..."),
                 )
 
