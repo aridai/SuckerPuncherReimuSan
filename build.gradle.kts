@@ -2,7 +2,7 @@ import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
-    kotlin("js") version "1.8.0"
+    kotlin("js") version "1.7.22"
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
 }
 
@@ -18,7 +18,7 @@ kotlin {
         binaries.executable()
         browser {
             commonWebpackConfig {
-                cssSupport { enabled.set(true) }
+                cssSupport { enabled = true }
             }
         }
         dependencies {
