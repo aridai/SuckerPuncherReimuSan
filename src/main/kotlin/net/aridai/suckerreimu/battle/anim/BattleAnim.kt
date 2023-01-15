@@ -215,7 +215,7 @@ internal sealed interface BattleAnim {
             /**
              * デフォルト期間
              */
-            const val DEFAULT_DURATION_IN_MS: Long = 3000L
+            const val DEFAULT_DURATION_IN_MS: Long = 2000L
         }
     }
 }
